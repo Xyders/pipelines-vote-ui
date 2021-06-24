@@ -15,7 +15,8 @@ spec:
         app: pipelines-vote-ui
     spec:
       containers:
-        - image: quay.io/openshift-pipeline/vote-ui:latest
+#        - image: quay.io/openshift-pipeline/vote-ui:latest
+        - image: default-route-openshift-image-registry.apps.stg-rcomm.openshift.copse.jp/pipelines-tutorial/vote-ui:latest        
           imagePullPolicy: Always
           name: pipelines-vote-ui
           ports:
@@ -28,3 +29,12 @@ spec:
               value: pipelines-vote-api
             - name: VOTING_API_SERVICE_PORT
               value: "9000"
+      nodeSelector:
+        type: rcom-node
+      tolerations:
+      - key: node-role.kubernetes.io/worker
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: node.kubernetes.io/unreachable
+        operator: "Exists"
+        effect: "NoSchedule"                
